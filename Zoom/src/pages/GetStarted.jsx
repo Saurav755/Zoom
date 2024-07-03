@@ -19,42 +19,21 @@ function SignIn() {
         />
       </header>
 
+      <h1 className="text-2xl font-bold m-auto p-4">Let's Get Started</h1>
       <div className="flex flex-col gap-3 justify-center items-center  w-98 m-auto">
         <input
           className=" w-1/2 border border-black rounded-xl focus:border-2 focus:border-blue  p-3 block text-xl text-black-40 "
           type="email"
           placeholder="Email Address"
         />
-        <input
-          className=" w-1/2 border border-black rounded-xl mb-2 focus:border-2 focus:border-blue  p-3 block text-xl text-black-50 file:rounded-full file:border-0"
-          type="password"
-          placeholder="Password"
-        />
-        <div className="flex justify-between  w-1/2 text-blue">
-          <div>
-            <Link to="/">Forgot password?</Link>
-          </div>
-          <div className=" flex gap-2 justify-center items-center text-blue">
-            <Link to="/">Help</Link>
-            <Link to="/">
-              <TfiNewWindow />
-            </Link>
-          </div>
-        </div>
-        <button className=" w-1/2 border rounded-xl p-3 mt-4 bg-blue text-white">
-          Sign In
-        </button>
+
         <p className="w-80">
-          By signing in, I agree to the Zoom's Privacy Statement and Terms of
+          By proceeding, I agree to the Zoom's Privacy Statement and Terms of
           Service.
         </p>
-        <div className="flex items-center gap-2 align w-1/2">
-          <input type="checkbox" />
-          <p>Stay signed in</p>
-          <Link to="/">
-            <IoIosInformationCircleOutline />
-          </Link>
-        </div>
+        <button className=" w-1/2 border rounded-xl p-3 mt-4 bg-blue text-white">
+          Continue
+        </button>
 
         <div className="flex w-4/5">
           <div className="w-2/6 border-t-2"></div>
