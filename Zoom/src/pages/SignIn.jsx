@@ -7,6 +7,23 @@ import { FaFacebook } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import NavBar from "../components/NavBar";
 
+import { yupResolver } from "react-hook-form";
+import { validationSchema } from "../validationSchemas/getStarted";
+
+const {
+  register,
+  handleSubmit,
+  watch,
+  formState: { errors },
+} = useForm({
+  resolver: yupResolver(validationSchema),
+});
+
+async function handleEmail(data) {
+  console.log(data);
+  await SignInCheckEmail(data);
+}
+
 function SignIn() {
   return (
     <div className=" flex flex-col justify-center m-auto">
@@ -19,7 +36,10 @@ function SignIn() {
         />
       </header>
 
-      <div className="flex flex-col gap-3 justify-center items-center  w-98 m-auto">
+      <form
+        onSubmit={handleSubmit(handleEmail)}
+        className="flex flex-col gap-3 justify-center items-center  w-98 m-auto"
+      >
         <input
           className=" w-1/2 border border-black rounded-xl focus:border-2 focus:border-blue  p-3 block text-xl text-black-40 "
           type="email"
@@ -88,7 +108,7 @@ function SignIn() {
           Zoom is protected by reCAPTCHA and the Privacy Policy and Terms of
           Service apply.
         </p>
-      </div>
+      </form>
     </div>
   );
 }

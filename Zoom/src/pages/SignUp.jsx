@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
-import { Link, Route } from "react-router-dom";
+import { Link, Navigate, Route } from "react-router-dom";
 import { FaCircleCheck } from "react-icons/fa6";
 import { IoIosWarning } from "react-icons/io";
 import { useCookies } from "react-cookie";
+import { useNavigate } from "react-router-dom";
 
 function SignUp() {
+  const navigate = useNavigate();
   const features = [
     "Host unlimited 40-minute meetings with up to 100 participants",
     "Keep everyone engaged with screen sharing and captions",
@@ -29,6 +31,8 @@ function SignUp() {
     if (age <= 16) {
       setUnderAge(true);
       setCookie("underAge", true);
+    } else {
+      navigate(`/Email-verify?birthyear=${birthYear}`);
     }
   };
 
@@ -84,9 +88,9 @@ function SignUp() {
                   type="text"
                   placeholder="Enter your birth year"
                 />
+
                 <button
                   disabled={!birthYear}
-                  onSubmit={<link to></link>}
                   className="p-2 text-md rounded-xl bg-blue text-white disabled:bg-slate-100 disabled:text-slate-500"
                 >
                   Continue

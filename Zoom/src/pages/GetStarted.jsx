@@ -1,75 +1,97 @@
-import { TfiNewWindow } from "react-icons/tfi";
 import { Link } from "react-router-dom";
-import { IoIosInformationCircleOutline } from "react-icons/io";
-import { IoKey } from "react-icons/io5";
-import { FaApple } from "react-icons/fa6";
-import { FaFacebook } from "react-icons/fa";
-import { FcGoogle } from "react-icons/fc";
-import NavBar from "../components/NavBar";
+import { FaCircleCheck } from "react-icons/fa6";
+import { IoWarning } from "react-icons/io5";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { validationSchema } from "../validationSchemas/getStarted";
+import { SignUpCheckEmail } from "../action/signUp";
 
-function SignIn() {
+function GetStarted() {
+  const features = [
+    "Unlimited meetings for up to 40 minutes and 100 participants each",
+    "Automated captions to help make meetings more inclusive",
+    "Secure, HD-quality audio and video",
+    "3 editable whiteboards",
+    "Team Chat for collaboration, file sharing, and more",
+    "Zoom Mail and Calendar in the Zoom app",
+    "Notes for creating and sharing editable documents",
+    "Screen sharing, virtual backgrounds, breakout rooms, and local recording",
+  ];
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(validationSchema),
+  });
+
+  async function handleEmail(data) {
+    console.log(data);
+    await SignUpCheckEmail(data);
+  }
+
   return (
-    <div className=" flex flex-col justify-center m-auto">
-      <NavBar />
-      <header className="w-80 m-auto">
-        <img
-          src="https://st1.zoom.us/fe-static/fe-signup-login-active/img/banner-step-1.2faf107a.png"
-          className="flex justify-center h-34 p-3 bg-slate-100 w-80"
-          alt="Learn More"
-        />
-      </header>
-
-      <h1 className="text-2xl font-bold m-auto p-4">Let's Get Started</h1>
-      <div className="flex flex-col gap-3 justify-center items-center  w-98 m-auto">
-        <input
-          className=" w-1/2 border border-black rounded-xl focus:border-2 focus:border-blue  p-3 block text-xl text-black-40 "
-          type="email"
-          placeholder="Email Address"
-        />
-
-        <p className="w-80">
-          By proceeding, I agree to the Zoom's Privacy Statement and Terms of
-          Service.
-        </p>
-        <button className=" w-1/2 border rounded-xl p-3 mt-4 bg-blue text-white">
-          Continue
-        </button>
-
-        <div className="flex w-4/5">
-          <div className="w-2/6 border-t-2"></div>
-          <p> Or sign in with</p>
-          <div className="w-2/6 border-t-2"></div>
+    <div className="flex h-screen justify-center items-center">
+      <div className="w-1/2 flex flex-col gap-16">
+        <div className="flex items-center gap-16">
+          <div className="bg-white flex flex-col gap-4 rounded-md shadow-lg p-8">
+            <h3 className="font-bold font-xl">
+              Create your free Basic account
+            </h3>
+            <ul className="flex flex-col gap-3">
+              {features.map((feature, key) => (
+                <li key={key} className="flex gap-2 text-sm">
+                  <div className="w-4 flex-grow-0">
+                    <FaCircleCheck
+                      size={16}
+                      className="flex-grow-0 mt-1 text-green-500"
+                    />
+                  </div>
+                  {feature}
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="flex flex-col  items-center">
+            <h2 className="text-center text-3xl mb-8 font-bold">
+              Let's Get Started
+            </h2>
+            <form
+              onSubmit={handleSubmit(handleEmail)}
+              className="flex flex-col gap-5"
+            >
+              <input
+                {...register("email")}
+                className="border border-black text-md p-3 rounded-md"
+                type="email"
+                // disabled={!watch("email")}
+                placeholder="Email Address"
+              />
+              {errors.email?.message && (
+                <span className="text-sm text-red-500">
+                  {errors.email.message}
+                </span>
+              )}
+              <button className="p-2 text-md rounded-xl bg-blue text-white disabled:bg-slate-100 disabled:text-slate-500 ">
+                Continue
+              </button>
+              <p>
+                By proceeding, I agree to{" "}
+                <Link to="#">Zoom's Privacy Statement</Link> and{" "}
+                <Link to="#">Terms of Service</Link>.
+              </p>
+            </form>
+          </div>
         </div>
-
-        <ul className="flex gap-6">
-          <li className="p-3 bg-slate-100 border-blueGray-500 rounded-xl">
-            <Link to="/">
-              <IoKey />
-            </Link>{" "}
-          </li>
-          <li className="p-3 bg-slate-100 border-blueGray-500 rounded-xl">
-            <Link to="/">
-              <FaApple />
-            </Link>
-          </li>
-          <li className="p-3 bg-slate-100 border-blueGray-500 rounded-xl">
-            <Link to="/">
-              <FcGoogle />
-            </Link>
-          </li>
-          <li className="p-3 bg-slate-100 border-blueGray-500 rounded-xl">
-            <Link to="/">
-              <FaFacebook />
-            </Link>
-          </li>
-        </ul>
+      </div>
+      <div className="fixed bottom-0 flex justify-between w-1/2 p-4">
+        <Link to="/sign-up">Back</Link>
         <p>
-          Zoom is protected by reCAPTCHA and the Privacy Policy and Terms of
-          Service apply.
+          Already have an account? <Link to="/sign-in">Sign In</Link>
         </p>
       </div>
     </div>
   );
 }
-
-export default SignIn;
+export default GetStarted;
