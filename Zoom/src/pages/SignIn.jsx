@@ -1,30 +1,41 @@
 import { TfiNewWindow } from "react-icons/tfi";
-import { Link } from "react-router-dom";
+import { Link, Navigate, Route } from "react-router-dom";
 import { IoIosInformationCircleOutline } from "react-icons/io";
 import { IoKey } from "react-icons/io5";
 import { FaApple } from "react-icons/fa6";
 import { FaFacebook } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import NavBar from "../components/NavBar";
-
-import { yupResolver } from "react-hook-form";
+import { SignInCheckEmail } from "../action/signIn";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useForm } from "react-hook-form";
 import { validationSchema } from "../validationSchemas/getStarted";
-
-const {
-  register,
-  handleSubmit,
-  watch,
-  formState: { errors },
-} = useForm({
-  resolver: yupResolver(validationSchema),
-});
-
-async function handleEmail(data) {
-  console.log(data);
-  await SignInCheckEmail(data);
-}
+import { useNavigate } from "react-router-dom";
 
 function SignIn() {
+  const navigate = useNavigate();
+  async function handleEmail(data) {
+    console.log(data);
+    const response = await SignInCheckEmail(data);
+    console.log(response);
+    if (response.status === 200) {
+      // go to next page
+      navigate(`/Home`);
+    } else {
+      // show error message
+      alert("Invalid email or password");
+    }
+  }
+
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(validationSchema),
+  });
+
   return (
     <div className=" flex flex-col justify-center m-auto">
       <NavBar />
@@ -41,15 +52,26 @@ function SignIn() {
         className="flex flex-col gap-3 justify-center items-center  w-98 m-auto"
       >
         <input
+          {...register("email")} //... is a spread operator
           className=" w-1/2 border border-black rounded-xl focus:border-2 focus:border-blue  p-3 block text-xl text-black-40 "
           type="email"
           placeholder="Email Address"
         />
+        {errors.email?.message && (
+          <span className="text-sm text-red-500">{errors.email.message}</span>
+        )}
         <input
+          {...register("password")}
           className=" w-1/2 border border-black rounded-xl mb-2 focus:border-2 focus:border-blue  p-3 block text-xl text-black-50 file:rounded-full file:border-0"
           type="password"
           placeholder="Password"
         />
+        {errors.password?.message && (
+          <span className="text-sm text-red-500">
+            {errors.password.message}
+          </span>
+        )}
+
         <div className="flex justify-between  w-1/2 text-blue">
           <div>
             <Link to="/">Forgot password?</Link>

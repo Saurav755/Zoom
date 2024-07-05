@@ -5,6 +5,7 @@ import Chat from "./pages/Chat";
 import Landing from "./pages/Landing";
 import GetStarted from "./pages/GetStarted";
 import EmailVerificationCode from "./pages/EmailVerificationCode";
+import Home from "./pages/Home";
 
 const router = createBrowserRouter([
   {
@@ -28,9 +29,10 @@ const router = createBrowserRouter([
     element: <GetStarted />,
   },
   {
-    path: "/Email-verify",
+    path: "/email-verify",
     element: <EmailVerificationCode />,
   },
+  { path: "/home", element: <Home /> },
 ]);
 
 export default router;
